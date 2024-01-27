@@ -1,6 +1,6 @@
 {
 	"name": "kbar-svelte-mini",
-	"version": "0.0.2",
+	"version": "0.0.21",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -46,7 +46,6 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
-		"kbar-svelte-mini": "^0.0.12",
 		"shiki": "^0.14.7"
 	}
 }
