@@ -143,7 +143,7 @@
 			title: 'Home',
 			subtitle: 'Subtitle can help with more context',
 			callback: () => {
-				goto('/docs');
+				goto('/');
 			}
 		},
 		{
@@ -159,7 +159,7 @@
 							title: 'Abdumumin Abdulkarim',
 							subtitle: 'author',
 							callback: () => {
-								console.log('history');
+								window.location.href = 'yaqeen.me';
 							}
 						},
 						{
@@ -171,40 +171,10 @@
 							}
 						}
 					]
-				},
+				}
+			]
+		},
 
-				{
-					id: 'history',
-					title: 'History',
-					callback: () => {
-						console.log('history');
-					}
-				}
-			]
-		},
-		{
-			id: 'services',
-			title: 'Services',
-			callback: () => {
-				console.log('Services');
-			},
-			nested: [
-				{
-					id: 'web-design',
-					title: 'Web Design',
-					callback: () => {
-						console.log('Web Design');
-					}
-				},
-				{
-					id: 'seo',
-					title: 'SEO',
-					callback: () => {
-						console.log('SEO');
-					}
-				}
-			]
-		},
 		{
 			id: 'blog',
 			title: 'Blog',

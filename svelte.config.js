@@ -5,7 +5,7 @@ import { escapeSvelte, mdsvex } from 'mdsvex';
 import shiki from 'shiki';
 
 const mdsvexConf = {
-	extensions: ['.md'],
+	extensions: ['.md', '.svelte'],
 	highlight: {
 		highlighter: async (code, lang = 'text') => {
 			const highlighter = await shiki.getHighlighter({
