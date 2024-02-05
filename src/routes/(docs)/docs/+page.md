@@ -8,8 +8,6 @@
 
 > This is a lite version <a href="https://kbar.vercel.app">kbar</a> ported to svelte
 
-Try it out – press `cmd+k` (macOS) or `ctrl+k` (Linux/Windows), or click the logo above.
-
 ### Introduction
 
 Command+k interfaces are used to create a web experience where any type of action users would be able to do via clicking can be done through a command menu.

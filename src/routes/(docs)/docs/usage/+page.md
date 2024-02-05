@@ -107,3 +107,24 @@ This documentation outlines the data structure for creating a dynamic navigation
 ```
 
 Adhering to this data structure enables the creation of a versatile and organized menu system for applications. Customize the properties and callbacks as needed, providing a seamless navigation experience and enhancing user interaction.
+
+# Programmatically toggle kbar
+
+To toggle the state of the dialog:
+
+```js
+import {getKbarState} from 'kbar-svelte-mini'
+
+let state = getKbarState()
+
+// your toggle function
+function toggleKbar()=>{
+  $state = !$state
+}
+```
+
+In the correponding element:
+
+```svelte
+<button on:click={toggleKbar}>Open kbar</button>
+```

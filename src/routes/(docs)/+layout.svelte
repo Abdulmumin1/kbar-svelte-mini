@@ -1,38 +1,13 @@
-<script>
-	import { getKbarState } from '$lib/index.js';
-
-	let state = getKbarState();
-
-	function toggle() {
-		$state = !$state;
-	}
-</script>
-
-<div class="layout">
-	<div class="relative">
-		<h1 class="center"><button class="button" on:click={toggle}>KBar</button></h1>
-	</div>
-
-	<div class="command">npm i @abdulmuminyqn/kbar-svelte-mini</div>
-
-	<div class="block">
-		<div>
-			<div class="sidenav">
-				<a href="/docs">Overview</a>
-				<a href="/docs/usage">Usage</a>
-				<a href="/docs/example">Example</a>
-			</div>
-		</div>
-		<div class="content">
-			<slot />
-		</div>
-	</div>
-
+<div class="block">
 	<div>
-		kbar-svelte-mini by <a
-			href="https://twitter.com/intent/follow?screen_name=abdulmuminyqn"
-			target="_blank">@abdulmuminyqn</a
-		>
+		<div class="sidenav">
+			<a href="/docs">Overview</a>
+			<a href="/docs/usage">Usage</a>
+			<a href="/docs/example">Example</a>
+		</div>
+	</div>
+	<div class="content">
+		<slot />
 	</div>
 </div>
 
