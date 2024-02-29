@@ -1,11 +1,16 @@
+<script>
+	import { page } from '$app/stores';
+</script>
+
 <div class="block">
-	<div>
-		<div class="sidenav">
-			<a href="/docs">Overview</a>
-			<a href="/docs/usage">Usage</a>
-			<a href="/docs/example">Example</a>
-		</div>
+	<div class="sidenav">
+		<a href="/docs/example" class:highlight={$page.url.pathname == '/docs/example'}
+			>Getting Started</a
+		>
+		<a href="/docs" class:highlight={$page.url.pathname == '/docs'}>Overview</a>
+		<a href="/docs/usage" class:highlight={$page.url.pathname == '/docs/usage'}>Usage</a>
 	</div>
+
 	<div class="content">
 		<slot />
 	</div>
@@ -36,7 +41,8 @@
 		gap: 60px;
 		width: 100%;
 		max-width: 860px;
-		/* padding: 100px; */
+
+		/* padding: px; */
 	}
 
 	.content {
@@ -57,9 +63,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
-		padding: 60px;
+		padding: 6px;
 		position: sticky;
 		top: 0;
+	}
+
+	:global(.highlight) {
+		background-color: #005cc5;
 	}
 
 	.sidenav > a {

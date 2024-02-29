@@ -50,7 +50,7 @@
 	bind:this={ele}
 >
 	{#if details?.parentTitle}
-		<div class="parent-title">{details?.parentTitle}..&nbsp;</div>
+		<div class="parent-title">{details?.parentTitle}..&RightAngleBracket; &nbsp;</div>
 	{/if}
 	<div class="">
 		<div class="title">{details?.title}</div>
@@ -70,6 +70,7 @@
 		text-align: left;
 		cursor: pointer;
 		display: flex;
+		align-items: center;
 		color: var(--kbar-primary, black);
 		font-size: 1rem;
 		/* box-sizing: content-box; */

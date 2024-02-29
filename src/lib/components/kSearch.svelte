@@ -1,7 +1,6 @@
 <script>
 	import { createEventDispatcher, onMount, tick } from 'svelte';
 	import { focusOption } from '$lib/model/index.js';
-	import { browser } from '$app/environment';
 	import { getKbarquery, getPlaceHolder, getKbarState } from '$lib/model/context.js';
 	const dispatch = createEventDispatcher();
 
@@ -9,6 +8,7 @@
 	let ksearch = getKbarquery();
 	let ksearchEl;
 	let state = getKbarState();
+	let browser = null;
 
 	export let showing;
 
@@ -39,6 +39,10 @@
 		// Initially focus and select the first option
 		// options[0].focus();
 		// Handle keyboard events
+
+		if (window) {
+			browser = true;
+		}
 		ksearchEl.addEventListener('keydown', (event) => {
 			const listbox = document.getElementById('k-listbox');
 			const options = listbox.querySelectorAll('button[role="option"]');

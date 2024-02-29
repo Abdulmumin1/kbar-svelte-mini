@@ -109,7 +109,7 @@
 		padding: 0;
 		display: flex;
 		flex-direction: column;
-		box-shadow: var(--shadow, 0px 0px 20px #99999970);
+		box-shadow: var(--shadow, 0px 0px 20px #99999921);
 		border-radius: 9px;
 		margin: 0;
 	}

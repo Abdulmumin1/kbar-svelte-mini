@@ -316,6 +316,7 @@
 			]
 		}
 	];
+
 	let bg = themes[theme].bg;
 	let primary = themes[theme].primary;
 	let secondary = themes[theme].secondary;
@@ -337,7 +338,6 @@
 	--kbar-primary={primary}
 	--kbar-secondary={secondary}
 	--kbar-border={border}
-	--shadow={'0px 0px 10px gray'}
 />
 
 <div class="layout">
@@ -393,13 +393,10 @@
 		gap: 10px;
 		align-items: center;
 		justify-content: center;
+		padding: 10px;
 	}
 	.center {
 		text-align: center;
-	}
-
-	.hero {
-		font-size: 4rem;
 	}
 
 	.command {
@@ -414,7 +411,7 @@
 		gap: 60px;
 		width: 100%;
 		max-width: 860px;
-		/* padding: 100px; */
+		/* padding: 1px; */
 	}
 
 	.content {
