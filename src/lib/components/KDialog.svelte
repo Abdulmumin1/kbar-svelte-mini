@@ -15,12 +15,12 @@
 
 	export let actions;
 
-	kbModel.register(actions);
+	// kbModel.register(actions);
 
 	let defPlaceholder = 'Search ..';
 	setPlaceHolder(defPlaceholder);
 	setKbarquery('');
-	setKbarActions(kbModel.getModel());
+	setKbarActions(actions);
 
 	let currentlyShown = getKbarActions();
 	let ksearch = getKbarquery();
@@ -34,7 +34,7 @@
 				kbarDialog.showModal();
 				$ksearch = '';
 				$placeholder = defPlaceholder;
-				$currentlyShown = [...kbModel.getModel()];
+				$currentlyShown = [...actions];
 			} else {
 				kbarDialog.close();
 			}
@@ -47,9 +47,9 @@
 				$currentlyShown = kbModel.searchName(event.detail, $currentlyShown);
 				return;
 			}
-			$currentlyShown = kbModel.searchName(event.detail);
+			$currentlyShown = kbModel.searchName(event.detail, actions);
 		} else {
-			$currentlyShown = [...kbModel.getModel()];
+			$currentlyShown = [...actions];
 			$placeholder = defPlaceholder;
 		}
 	}

@@ -1,23 +1,74 @@
 <svelte:head>
 
-<title>Docs</title>
-
+<title>Getting Started</title>
 </svelte:head>
 
-## Overview
+## Getting Started
 
-> This is a lite version <a href="https://kbar.vercel.app">kbar</a> ported to svelte
+To set up a KBar-mini navigation system in your Svelte application, follow these steps:
 
-### Introduction
+### Step 1: Add to Root Layout
 
-Command+k interfaces are used to create a web experience where any type of action users would be able to do via clicking can be done through a command menu.
+Include the KDialog component in your root layout file (layout.svelte):
 
-With macOS's Spotlight and Linear's command+k experience in mind, kbar aims to be a simple abstraction to add a fast and extensible command+k menu to your site.
+```js
+// layout.svelte
+import { KDialog } from 'kbar-svelte-mini';
+```
 
-### Features
+### Step 2: Additional Configuration
 
-- Built in animations alongside fully customizable components
-- Keyboard navigation support
-- Performance as a priority; large search results, not a problem
-- Simple data structure which enables anyone to easily build complex navigation structures
-- Screen reader support
+Due to safety design decisions, add the following function call in your layout.svelte:
+
+```js
+import { setKbarState } from 'kbar-svelte-mini';
+
+setKbarState();
+```
+
+### Step 3: Define Actions
+
+Create an array of actions that represent the navigation items in your KBar. Each action should have an **_id_** (optional), **_title_**, **_optional subtitle_**, and a **_callback_** function:
+
+```js
+let actions = [
+  {
+	id: 'home',
+	title: 'Home',
+	subtitle: 'Subtitle can help with more context',
+	callback: () => {
+		console.log('home');
+	},
+  },
+// ... add more actions as needed
+];
+
+// Include the KDialog component with defined actions
+
+<KDialog {actions} />
+```
+
+## Customization (Optional)
+
+You can customize the appearance of the KBar-mini navigation system by adjusting the following variables:
+
+- `--bg`: Change the background to fit your application.
+- `--kbar-primary`: Primary color for your app, used for text and border highlight.
+- `--kbar-gray`: Color for dimmed texts.
+- `--kbar-search`: Search bar text color, primary color used in the absence.
+- `--shadow`: Control the shadow of the dialog.
+
+### Example:
+
+```svelte
+<KDialog
+	{actions}
+	--bg={bg}
+	--kbar-primary={primary}
+	--kbar-secondary={secondary}
+	--kbar-border={border}
+	--shadow={'0px 0px 10px gray'}
+/>
+```
+
+Feel free to customize these variables according to your application's design.

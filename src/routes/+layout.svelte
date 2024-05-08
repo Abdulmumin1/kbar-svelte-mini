@@ -1,6 +1,6 @@
 <script>
 	import { KDialog, setKbarState, getKbarState } from '$lib/index.js';
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	setKbarState();
 
@@ -15,13 +15,13 @@
 	let themes = {
 		darkTheme: {
 			bg: '#0c0a09',
-			primary: 'white',
-			secondary: '#999',
+			primary: '#34d399',
+			secondary: 'white',
 			border: '3px'
 		},
 		lightTheme: {
 			bg: '#ffffff',
-			primary: 'black',
+			primary: '#34d399',
 			secondary: '#95a5a6',
 			border: '2px'
 		},
@@ -180,28 +180,6 @@
 				}
 			]
 		},
-
-		{
-			id: 'blog',
-			title: 'Blog',
-			subtitle: 'For demo purpose only',
-			nested: [
-				{
-					id: 'article1',
-					title: 'Introduction to Web Development',
-					callback: () => {
-						console.log('Introduction to Web Development');
-					}
-				},
-				{
-					id: 'article2',
-					title: 'Best Practices for SEO',
-					callback: () => {
-						console.log('Best Practices for SEO');
-					}
-				}
-			]
-		},
 		{
 			id: 'documentation',
 			title: 'Documentation',
@@ -214,17 +192,24 @@
 					}
 				},
 				{
-					id: 'api-reference',
-					title: 'Usage',
-					callback: () => {
-						goto('/docs/usage');
-					}
-				},
-				{
 					id: 'example-demo',
 					title: 'Example',
 					callback: () => {
-						goto('/docs/example');
+						goto('/docs/examples');
+					}
+				},
+				{
+					id: 'programmatic-functions',
+					title: 'Programmatic Functions',
+					callback: () => {
+						goto('/docs/functions');
+					}
+				},
+				{
+					id: 'api-reference',
+					title: 'Data Structure',
+					callback: () => {
+						goto('/docs/reference');
 					}
 				}
 			]
@@ -314,6 +299,15 @@
 					]
 				}
 			]
+		},
+
+		{
+			id: 'Start-us',
+			title: 'Star ⭐',
+			subtitle: 'Leave a star on GitHub',
+			callback: () => {
+				window.location.href = 'https://yaqeen.me';
+			}
 		}
 	];
 
@@ -341,24 +335,16 @@
 />
 
 <div class="layout">
-	<div class="relative">
+	<!-- <div class="relative">
 		<h1 class="center"><button class="button" on:click={toggle}>KBar</button></h1>
-	</div>
+	</div> -->
 
-	<div class="command">npm i kbar-svelte-mini</div>
-	<blockquote>Try it out - press <code>ctrl+k/cmd+k </code>or click the button above</blockquote>
-
+	<!-- <blockquote>Try it out - press <code>ctrl+k/cmd+k </code>or click the button above</blockquote> -->
+	<!-- <div class="command">npm i kbar-svelte-mini</div> -->
 	<div class="block">
-		<div class="content">
+		<div style="min-width: 100%;">
 			<slot />
 		</div>
-	</div>
-
-	<div style="margin-bottom: 10px;">
-		kbar-svelte-mini by <a
-			href="https://twitter.com/intent/follow?screen_name=abdulmuminyqn"
-			target="_blank">@abdulmuminyqn</a
-		>
 	</div>
 </div>
 
@@ -393,25 +379,24 @@
 		gap: 10px;
 		align-items: center;
 		justify-content: center;
-		padding: 10px;
+		/* padding: 10px; */
 	}
 	.center {
 		text-align: center;
 	}
 
 	.command {
-		background-color: rgb(216, 215, 215);
+		background-color: #eff1f5;
 		color: black;
 		padding: 4px 20px;
 		border-radius: 20px;
+		font-size: 2rem;
 	}
 
 	.block {
 		display: flex;
 		gap: 60px;
 		width: 100%;
-		max-width: 860px;
-		/* padding: 1px; */
 	}
 
 	.content {
@@ -445,6 +430,11 @@
 	:is(.darkTheme .layout) {
 		background-color: #0c0a09 !important;
 		color: white !important;
+	}
+
+	:is(.darkTheme .command) {
+		background-color: #23262e !important;
+		color: rgb(143, 152, 179) !important;
 	}
 
 	:is(.darkTheme .button) {

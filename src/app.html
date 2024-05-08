@@ -24,6 +24,45 @@
 			:is(.darkTheme blockquote) {
 				border-color: white !important;
 			}
+
+			:root {
+				--bg-color: #fff;
+				--text-color: #333;
+				--sidebar-bg: #f5f5f5;
+				--sidebar-border: #ddd;
+				--logo-color: #34d399;
+				--active-link-bg: #34d399;
+				--active-link-color: #fff;
+				--header-bg: #f5f5f5;
+				--header-border: #ddd;
+				--footer-bg: #f5f5f5;
+				--footer-border: #ddd;
+			}
+
+			.darkTheme {
+				/* background-color: orange; */
+				--bg-color: #0c0a09;
+				--text-color: #fff;
+				--sidebar-bg: #23262e;
+				--sidebar-border: #333;
+				--logo-color: #05c9ae;
+				--active-link-bg: #05c9ae;
+				--active-link-color: #fff;
+				--header-bg: #23262e;
+				--header-border: #333;
+				--footer-bg: #23262e;
+				--footer-border: #333;
+			}
+
+			html.darkTheme .shiki,
+			html.darkTheme .shiki span {
+				color: var(--shiki-dark) !important;
+				background-color: var(--shiki-dark-bg) !important;
+				/* Optional, if you also want font styles */
+				font-style: var(--shiki-dark-font-style) !important;
+				font-weight: var(--shiki-dark-font-weight) !important;
+				text-decoration: var(--shiki-dark-text-decoration) !important;
+			}
 		</style>
 	</head>
 	<body data-sveltekit-preload-data="hover">
