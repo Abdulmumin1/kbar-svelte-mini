@@ -1,5 +1,4 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
 	import { kbModel, clickOutside } from '$lib/model/index.js';
 	import {
 		getKbarState,
@@ -9,71 +8,78 @@
 		setKbarquery,
 		setPlaceHolder,
 		getPlaceHolder
-	} from '$lib/model/context.js';
+	} from '$lib/model/context.svelte.js';
+	import type { KbarAction } from '$lib/types.js';
 	import KSearch from './kSearch.svelte';
 	import KCommads from './kCommads.svelte';
 
-	export let actions;
+	interface Props {
+		actions: KbarAction[];
+	}
 
-	// kbModel.register(actions);
+	let { actions }: Props = $props();
 
-	let defPlaceholder = 'Search ..';
+	const defPlaceholder = 'Search ..';
 	setPlaceHolder(defPlaceholder);
 	setKbarquery('');
-	setKbarActions(actions);
+	setKbarActions([]);
 
-	let currentlyShown = getKbarActions();
-	let ksearch = getKbarquery();
-	let kbarDialog;
-	let state = getKbarState();
-	let placeholder = getPlaceHolder();
+	const currentlyShown = getKbarActions();
+	const ksearch = getKbarquery();
+	let kbarDialog = $state<HTMLDialogElement | undefined>();
+	const kbarState = getKbarState();
+	const placeholder = getPlaceHolder();
 
-	$: {
-		try {
-			if ($state === true) {
-				kbarDialog.showModal();
-				$ksearch = '';
-				$placeholder = defPlaceholder;
-				$currentlyShown = [...actions];
-			} else {
-				kbarDialog.close();
-			}
-		} catch (error) {}
-	}
+	$effect(() => {
+		if (actions) {
+			currentlyShown.value = [...actions];
+		}
+	});
 
-	function search(event) {
-		if (event.detail) {
-			if ($placeholder != defPlaceholder) {
-				$currentlyShown = kbModel.searchName(event.detail, $currentlyShown);
+	$effect(() => {
+		if (kbarState.value === true) {
+			kbarDialog?.showModal();
+			ksearch.value = '';
+			placeholder.value = defPlaceholder;
+			currentlyShown.value = [...actions];
+		} else {
+			kbarDialog?.close();
+		}
+	});
+
+	function search(query: string): void {
+		if (query) {
+			if (placeholder.value !== defPlaceholder) {
+				currentlyShown.value = kbModel.searchName(query, currentlyShown.value);
 				return;
 			}
-			$currentlyShown = kbModel.searchName(event.detail, actions);
+			currentlyShown.value = kbModel.searchName(query, actions);
 		} else {
-			$currentlyShown = [...actions];
-			$placeholder = defPlaceholder;
+			currentlyShown.value = [...actions];
+			placeholder.value = defPlaceholder;
 		}
 	}
-	// export let o;
-	function closeModal() {
-		$state = false;
-		// kbarDialog.close();
+
+	function closeModal(): void {
+		kbarState.value = false;
 	}
-	onMount(() => {
-		document.addEventListener('keydown', function (event) {
+
+	$effect(() => {
+		function handleKeydown(event: KeyboardEvent): void {
 			// Check if Ctrl (or Command on Mac) and K are pressed simultaneously
 			if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
 				event.preventDefault();
-				$state = !$state;
-
-				// Add your custom functionality here
+				kbarState.value = !kbarState.value;
 			}
-		});
+		}
+		document.addEventListener('keydown', handleKeydown);
+		return () => document.removeEventListener('keydown', handleKeydown);
 	});
 </script>
 
 <dialog class="dialog" id="dialog" bind:this={kbarDialog} tabindex="-1">
-	<div class="dialog-container" use:clickOutside on:click_outside={closeModal}>
-		<KSearch on:search={search} />
+	<div class="dialog-container" use:clickOutside={closeModal}>
+		<KSearch onsearch={search} />
 		<KCommads />
 	</div>
 </dialog>

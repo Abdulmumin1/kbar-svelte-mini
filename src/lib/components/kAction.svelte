@@ -1,43 +1,49 @@
-<script>
+<script lang="ts">
 	import {
-		setKbarState,
 		getKbarState,
 		getKbarActions,
 		getPlaceHolder,
 		getKbarquery
-	} from '$lib/model/context.js';
+	} from '$lib/model/context.svelte.js';
 	import { focusOption } from '$lib/model/index.js';
-	import { onMount } from 'svelte';
-	// setKbarState();
+	import type { KbarAction } from '$lib/types.js';
 
-	export let details;
-	export let count;
-
-	let nested = details?.nested;
-
-	let state = getKbarState();
-	let jumpto = getKbarActions();
-	let placeholder = getPlaceHolder();
-	let ksearch = getKbarquery();
-	let ele;
-
-	function callback() {
-		if (nested) {
-			$placeholder = details?.title;
-			$jumpto = nested;
-			$ksearch = '';
-			return;
-		}
-		details?.callback();
-		$state = false;
+	interface Props {
+		details: KbarAction;
+		count: number;
 	}
 
-	onMount(() => {
-		ele.addEventListener('mousemove', () => {
-			const listbox = document.getElementById('k-listbox');
-			const options = listbox.querySelectorAll('button[role="option"]');
-			focusOption(count - 1, options);
-		});
+	let { details, count }: Props = $props();
+
+	const kbarState = getKbarState();
+	const jumpto = getKbarActions();
+	const placeholder = getPlaceHolder();
+	const ksearch = getKbarquery();
+	let ele = $state<HTMLButtonElement | undefined>();
+
+	function callback(): void {
+		if (details?.nested) {
+			placeholder.value = details.title;
+			jumpto.value = details.nested;
+			ksearch.value = '';
+			return;
+		}
+		details?.callback?.();
+		kbarState.value = false;
+	}
+
+	$effect(() => {
+		if (ele) {
+			function handleMouseMove(): void {
+				const listbox = document.getElementById('k-listbox');
+				if (listbox) {
+					const options = listbox.querySelectorAll('button[role="option"]');
+					focusOption(count - 1, options);
+				}
+			}
+			ele.addEventListener('mousemove', handleMouseMove);
+			return () => ele?.removeEventListener('mousemove', handleMouseMove);
+		}
 	});
 </script>
 
@@ -46,16 +52,16 @@
 	aria-selected="false"
 	role="option"
 	class="action-button kbar-list-item"
-	on:click={callback}
+	onclick={callback}
 	bind:this={ele}
 >
 	{#if details?.parentTitle}
-		<div class="parent-title">{details?.parentTitle}..&RightAngleBracket; &nbsp;</div>
+		<div class="parent-title">{details.parentTitle}..&RightAngleBracket; &nbsp;</div>
 	{/if}
 	<div class="">
 		<div class="title">{details?.title}</div>
 		{#if details?.subtitle}
-			<div class="subtitle">{details?.subtitle}</div>
+			<div class="subtitle">{details.subtitle}</div>
 		{/if}
 	</div>
 </button>

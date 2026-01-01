@@ -1,74 +1,59 @@
 <svelte:head>
 
-<title>Getting Started</title>
+<title>Documentation - kbar-svelte-mini</title>
 </svelte:head>
 
-## Getting Started
+# Kbar Svelte Mini Documentation
 
-To set up a KBar-mini navigation system in your Svelte application, follow these steps:
+Welcome to the kbar-svelte-mini documentation. Learn how to integrate a fully accessible, keyboard-first command palette into your Svelte 5 applications.
 
-### Step 1: Add to Root Layout
+## Quick Start
 
-Include the KDialog component in your root layout file (layout.svelte):
+1. **Install the package**
 
-```js
-// layout.svelte
-import { KDialog } from 'kbar-svelte-mini';
-```
+   Run the installation command in your terminal:
 
-### Step 2: Additional Configuration
+   ```bash
+   npm install kbar-svelte-mini
+   ```
 
-Due to safety design decisions, add the following function call in your layout.svelte:
+2. **Define Actions**
 
-```js
-import { setKbarState } from 'kbar-svelte-mini';
+   Create an array of actions. Each action requires an `id` and `title`.
 
-setKbarState();
-```
+   ```typescript
+   import type { KbarAction } from 'kbar-svelte-mini';
+   import { goto } from '$app/navigation';
 
-### Step 3: Define Actions
+   const actions: KbarAction[] = [
+   	{
+   		id: 'home',
+   		title: 'Home',
+   		callback: () => goto('/')
+   	},
+   	{
+   		id: 'docs',
+   		title: 'Documentation',
+   		callback: () => goto('/docs')
+   	}
+   ];
+   ```
 
-Create an array of actions that represent the navigation items in your KBar. Each action should have an **_id_** (optional), **_title_**, **_optional subtitle_**, and a **_callback_** function:
+3. **Add to layout**
 
-```js
-let actions = [
-  {
-	id: 'home',
-	title: 'Home',
-	subtitle: 'Subtitle can help with more context',
-	callback: () => {
-		console.log('home');
-	},
-  },
-// ... add more actions as needed
-];
+   Import `KDialog` and add it to your root `+layout.svelte` file, passing in your actions.
 
-// Include the KDialog component with defined actions
+   ```svelte
+   <script>
+   	import { KDialog, setKbarState } from 'kbar-svelte-mini';
 
-<KDialog {actions} />
-```
+   	let { children } = $props();
 
-## Customization (Optional)
+   	// Initialize the state
+   	setKbarState();
+   </script>
 
-You can customize the appearance of the KBar-mini navigation system by adjusting the following variables:
+   <KDialog {actions} />
 
-- `--bg`: Change the background to fit your application.
-- `--kbar-primary`: Primary color for your app, used for text and border highlight.
-- `--kbar-gray`: Color for dimmed texts.
-- `--kbar-search`: Search bar text color, primary color used in the absence.
-- `--shadow`: Control the shadow of the dialog.
-
-### Example:
-
-```svelte
-<KDialog
-	{actions}
-	--bg={bg}
-	--kbar-primary={primary}
-	--kbar-secondary={secondary}
-	--kbar-border={border}
-	--shadow={'0px 0px 10px gray'}
-/>
-```
-
-Feel free to customize these variables according to your application's design.
+   {@render children()}
+   ```

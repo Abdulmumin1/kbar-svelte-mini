@@ -1,28 +1,28 @@
-<script>
+<script lang="ts">
 	import KAction from './kAction.svelte';
-	import { getKbarActions } from '$lib/model/context.js';
-	import { onMount, tick } from 'svelte';
+	import { getKbarActions } from '$lib/model/context.svelte.js';
+	import { tick } from 'svelte';
 	import { focusOption } from '$lib/model/index.js';
 
-	let comboboxItems = 'k-listbox';
+	const comboboxItems = 'k-listbox';
 
-	let currentlyShown = getKbarActions();
-	let contanter;
+	const currentlyShown = getKbarActions();
+	let container = $state<HTMLDivElement | undefined>();
 
-	$: {
-		if (contanter && $currentlyShown) {
+	$effect(() => {
+		if (container && currentlyShown.value) {
 			tick().then(() => {
-				let index = 0;
-				const options = contanter.querySelectorAll('button[role="option"]');
+				const index = 0;
+				const options = container!.querySelectorAll('button[role="option"]');
 				focusOption(index, options);
 			});
 		}
-	}
+	});
 </script>
 
-<div role="listbox" class="actions-container" id={comboboxItems} bind:this={contanter}>
-	{#each $currentlyShown as m (crypto.randomUUID())}
-		<KAction details={m} count={$currentlyShown.indexOf(m) + 1} />
+<div role="listbox" class="actions-container" id={comboboxItems} bind:this={container}>
+	{#each currentlyShown.value as m, i (m.id ?? i)}
+		<KAction details={m} count={i + 1} />
 	{/each}
 </div>
 

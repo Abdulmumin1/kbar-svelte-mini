@@ -1,149 +1,20 @@
-<script>
+<script lang="ts">
 	import { KDialog, setKbarState, getKbarState } from '$lib/index.js';
-	// import { onMount } from 'svelte';
+	import type { KbarAction } from '$lib/types.js';
 	import { goto } from '$app/navigation';
-	setKbarState();
+	import type { Snippet } from 'svelte';
 
-	let state = getKbarState();
-
-	function toggle() {
-		$state = !$state;
+	interface Props {
+		children: Snippet;
 	}
 
-	let theme = 'lightTheme';
+	let { children }: Props = $props();
 
-	let themes = {
-		darkTheme: {
-			bg: '#0c0a09',
-			primary: '#34d399',
-			secondary: 'white',
-			border: '3px'
-		},
-		lightTheme: {
-			bg: '#ffffff',
-			primary: '#34d399',
-			secondary: '#95a5a6',
-			border: '2px'
-		},
-		forestTheme: {
-			bg: '#2c3e50',
-			primary: '#27ae60',
-			secondary: '#138d75',
-			border: '4px'
-		},
-		oceanTheme: {
-			bg: '#3498db',
-			primary: '#2980b9',
-			secondary: '#1f618d',
-			border: '3px'
-		},
-		fireTheme: {
-			bg: '#e74c3c',
-			primary: '#d35400',
-			secondary: '#c0392b',
-			border: '2px'
-		},
-		earthTheme: {
-			bg: '#8e44ad',
-			primary: '#9b59b6',
-			secondary: '#5d3c6a',
-			border: '3px'
-		},
-		skyTheme: {
-			bg: '#3498db',
-			primary: '#1abc9c',
-			secondary: '#16a085',
-			border: '2px'
-		},
-		sunriseTheme: {
-			bg: '#f39c12',
-			primary: '#e67e22',
-			secondary: '#b9770e',
-			border: '4px'
-		},
-		cloudTheme: {
-			bg: '#ecf0f1',
-			primary: '#3498db',
-			secondary: '#bdc3c7',
-			border: '3px'
-		},
-		chocolateTheme: {
-			bg: '#d35400',
-			primary: '#8e44ad',
-			secondary: '#6c3483',
-			border: '2px'
-		}
-	};
+	setKbarState();
 
-	let actions = [
-		{
-			id: 'home',
-			title: 'Home',
-			subtitle: 'Subtitle can help with more context',
-			callback: () => {
-				console.log('home');
-			}
-		},
-		{
-			id: 'contact',
-			title: 'Contact',
-			callback: () => {
-				window.location.href = 'https://yaqeen.me';
-			}
-		},
-		{
-			id: 'blog',
-			title: 'Blog',
-			callback: () => {
-				console.log('blog');
-			}
-		},
-		{
-			id: 'twitter',
-			title: 'Twitter',
-			subtitle: '@abdulmuminyqn',
-			callback: () => {
-				console.log('twitter');
-			}
-		},
-		{
-			id: 'services',
-			title: 'Services',
-			callback: () => {
-				console.log('Services');
-			}
-		},
-		{
-			id: 'youtube',
-			title: 'Youtube',
-			parent: 'Navigation',
-			callback: () => {
-				console.log('Services');
-			}
-		},
-		{
-			id: 'changetheme',
-			title: 'Change theme',
-			nested: [
-				{
-					id: 'light',
-					title: 'Light',
-					callback: () => {
-						console.log('light');
-					}
-				},
-				{
-					id: 'dark',
-					title: 'Dark',
-					callback: () => {
-						console.log('Dark');
-					}
-				}
-			]
-		}
-	];
+	const kbarState = getKbarState();
 
-	let testData = [
+	const testData: KbarAction[] = [
 		{
 			id: 'home',
 			title: 'Home',
@@ -165,7 +36,7 @@
 							title: 'Abdumumin Abdulkarim',
 							subtitle: 'author',
 							callback: () => {
-								window.location.href = 'yaqeen.me';
+								window.location.href = 'https://yaqeen.me';
 							}
 						},
 						{
@@ -222,142 +93,36 @@
 			}
 		},
 		{
-			id: 'changetheme',
-			title: 'Change theme',
-			nested: [
-				{
-					id: 'light',
-					title: 'Light',
-					callback: () => {
-						theme = 'lightTheme';
-						document.querySelector('html').classList = [];
-						document.querySelector('html').classList = ['lightTheme'];
-					}
-				},
-				{
-					id: 'dark',
-					title: 'Dark',
-					callback: () => {
-						theme = 'darkTheme';
-						document.querySelector('html').classList = [];
-						document.querySelector('html').classList = ['darkTheme'];
-					}
-				},
-				{
-					id: 'otherop',
-					title: 'Other Options',
-					nested: [
-						{
-							id: 'forest',
-							title: 'Forest',
-							callback: () => {
-								theme = 'forestTheme';
-							}
-						},
-						{
-							id: 'ocean',
-							title: 'Ocean',
-							callback: () => {
-								theme = 'oceanTheme';
-							}
-						},
-						{
-							id: 'fire',
-							title: 'Fire',
-							callback: () => {
-								theme = 'fireTheme';
-							}
-						},
-						{
-							id: 'earth',
-							title: 'Earth',
-							callback: () => {
-								theme = 'earthTheme';
-							}
-						},
-						{
-							id: 'sky',
-							title: 'Sky',
-							callback: () => {
-								theme = 'skyTheme';
-							}
-						},
-						{
-							id: 'sunrise',
-							title: 'Sunrise',
-							callback: () => {
-								theme = 'sunriseTheme';
-							}
-						},
-						{
-							id: 'cloud',
-							title: 'Cloud',
-							callback: () => {
-								theme = 'cloudTheme';
-							}
-						}
-					]
-				}
-			]
-		},
-
-		{
 			id: 'Start-us',
 			title: 'Star ⭐',
 			subtitle: 'Leave a star on GitHub',
 			callback: () => {
-				window.location.href = 'https://yaqeen.me';
+				window.location.href = 'https://github.com/Abdulmumin1/kbar-svelte-mini';
 			}
 		}
 	];
-
-	let bg = themes[theme].bg;
-	let primary = themes[theme].primary;
-	let secondary = themes[theme].secondary;
-	let border = themes[theme].border;
-
-	$: {
-		if (theme) {
-			bg = themes[theme].bg;
-			primary = themes[theme].primary;
-			secondary = themes[theme].secondary;
-			border = themes[theme].border;
-		}
-	}
 </script>
 
 <KDialog
 	actions={testData}
-	--bg={bg}
-	--kbar-primary={primary}
-	--kbar-secondary={secondary}
-	--kbar-border={border}
+	--bg="#ffffff"
+	--kbar-primary="#34d399"
+	--kbar-secondary="#9ca3af"
+	--kbar-border="2px"
 />
 
-<div class="layout">
-	<!-- <div class="relative">
-		<h1 class="center"><button class="button" on:click={toggle}>KBar</button></h1>
-	</div> -->
-
-	<!-- <blockquote>Try it out - press <code>ctrl+k/cmd+k </code>or click the button above</blockquote> -->
-	<!-- <div class="command">npm i kbar-svelte-mini</div> -->
-	<div class="block">
-		<div style="min-width: 100%;">
-			<slot />
-		</div>
-	</div>
+<div class="app-root">
+	{@render children()}
 </div>
 
 <style>
 	:global(.shiki) {
 		padding: 30px 20px;
 		border-radius: 10px;
-		/* width: 100%; */
 	}
 
 	:global(blockquote) {
 		border-left: 5px solid black;
-		/* background-color: orange; */
 		padding: 0px 10px;
 		margin: 0;
 	}
@@ -372,86 +137,8 @@
 		background-color: inherit;
 	}
 
-	.layout {
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		align-items: center;
-		justify-content: center;
-		/* padding: 10px; */
-	}
-	.center {
-		text-align: center;
-	}
-
-	.command {
-		background-color: #eff1f5;
-		color: black;
-		padding: 4px 20px;
-		border-radius: 20px;
-		font-size: 2rem;
-	}
-
-	.block {
-		display: flex;
-		gap: 60px;
+	.app-root {
 		width: 100%;
-	}
-
-	.content {
-		width: 100%;
-	}
-	.button {
-		margin-top: 160px;
-		height: 80px;
-		width: 80px;
-		background-color: white;
-		border: 2px solid gray;
-		border-radius: 10px;
-		font-size: 1.2rem;
-		cursor: pointer;
-	}
-
-	.sidenav {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		padding: 60px;
-		position: sticky;
-		top: 0;
-	}
-
-	.sidenav > a {
-		text-decoration: none;
-		color: black !important;
-	}
-
-	:is(.darkTheme .layout) {
-		background-color: #0c0a09 !important;
-		color: white !important;
-	}
-
-	:is(.darkTheme .command) {
-		background-color: #23262e !important;
-		color: rgb(143, 152, 179) !important;
-	}
-
-	:is(.darkTheme .button) {
-		background-color: #0c0a09 !important;
-		color: white !important;
-	}
-
-	:is(.darkTheme .sidenav > a) {
-		color: white !important;
-	}
-
-	@media (max-width: 768px) {
-		.block {
-			flex-direction: column;
-		}
-		.sidenav {
-			padding: 10px;
-		}
+		min-height: 100vh;
 	}
 </style>

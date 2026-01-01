@@ -1,111 +1,112 @@
-<script>
-	import { createEventDispatcher, onMount, tick } from 'svelte';
+<script lang="ts">
+	import { tick } from 'svelte';
 	import { focusOption } from '$lib/model/index.js';
-	import { getKbarquery, getPlaceHolder, getKbarState } from '$lib/model/context.js';
-	const dispatch = createEventDispatcher();
+	import { getKbarquery, getPlaceHolder, getKbarState } from '$lib/model/context.svelte.js';
 
-	let placeholder = getPlaceHolder();
-	let ksearch = getKbarquery();
-	let ksearchEl;
-	let state = getKbarState();
-	let browser = null;
-
-	export let showing;
-
-	function search() {
-		dispatch('search', $ksearch);
+	interface Props {
+		onsearch?: (query: string) => void;
+		showing?: boolean;
 	}
 
-	let activeDescendantId = null;
+	let { onsearch, showing }: Props = $props();
 
-	$: {
-		if ($placeholder && browser && ksearchEl) {
+	const placeholder = getPlaceHolder();
+	const ksearch = getKbarquery();
+	let ksearchEl = $state<HTMLInputElement | undefined>();
+	const kbarState = getKbarState();
+	let isBrowser = $state(false);
+
+	function search(): void {
+		onsearch?.(ksearch.value);
+	}
+
+	let activeDescendantId = $state<string | null>(null);
+
+	$effect(() => {
+		if (placeholder.value && isBrowser && ksearchEl) {
 			ksearchEl.focus();
 		}
-	}
+	});
 
-	$: {
-		if ($state && browser && ksearchEl) {
+	$effect(() => {
+		if (kbarState.value && isBrowser && ksearchEl) {
 			tick().then(() => {
-				ksearchEl.focus();
+				ksearchEl?.focus();
 				setTimeout(() => {
-					ksearchEl.select();
+					ksearchEl?.select();
 				}, 200);
 			});
 		}
-	}
+	});
 
-	onMount(() => {
-		// Initially focus and select the first option
-		// options[0].focus();
-		// Handle keyboard events
-
-		if (window) {
-			browser = true;
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			isBrowser = true;
 		}
-		ksearchEl.addEventListener('keydown', (event) => {
+
+		function handleKeydown(event: KeyboardEvent): void {
 			const listbox = document.getElementById('k-listbox');
+			if (!listbox) return;
+
 			const options = listbox.querySelectorAll('button[role="option"]');
 			const focusedOption = listbox.querySelector('[aria-selected="true"]');
-			const selectedIndex = Array.from(options).indexOf(focusedOption);
-			// console.log(selectedIndex, focusedOption);
-			let goto;
+			const selectedIndex = Array.from(options).indexOf(focusedOption as Element);
+			let gotoIndex: number;
+
 			switch (event.key) {
 				case 'ArrowDown':
 					event.preventDefault(); // Prevent browser scrolling
-					goto = selectedIndex + 1;
-					if (goto < options.length) {
-						focusOption(goto, options);
+					gotoIndex = selectedIndex + 1;
+					if (gotoIndex < options.length) {
+						focusOption(gotoIndex, options);
 					} else {
-						goto = 0;
-						focusOption(goto, options);
+						gotoIndex = 0;
+						focusOption(gotoIndex, options);
 					}
-					options[goto].scrollIntoView();
-
-					// focusOption(selectedIndex + 1, options);
+					options[gotoIndex]?.scrollIntoView();
 					break;
 				case 'ArrowUp':
 					event.preventDefault();
-					goto = selectedIndex - 1;
-					if (options.length > goto && goto > -1) {
-						console.log(options.length, goto);
-						options[goto].scrollIntoView();
-						focusOption(goto, options);
+					gotoIndex = selectedIndex - 1;
+					if (options.length > gotoIndex && gotoIndex > -1) {
+						options[gotoIndex]?.scrollIntoView();
+						focusOption(gotoIndex, options);
 					} else {
-						goto = options.length - 1;
-						focusOption(goto, options);
+						gotoIndex = options.length - 1;
+						focusOption(gotoIndex, options);
 					}
-					options[goto].scrollIntoView();
-
+					options[gotoIndex]?.scrollIntoView();
 					break;
 				case 'Enter':
-					// const selectedElement = listbox.querySelector('[aria-selected="true"]');
 					event.preventDefault();
 					if (focusedOption) {
-						focusedOption.click();
+						(focusedOption as HTMLElement).click();
 					}
-				// Implement other keyboard shortcuts as needed (e.g., Home, End, Space, Shift+Up/Down)
 			}
-		});
+		}
+
+		if (ksearchEl) {
+			ksearchEl.addEventListener('keydown', handleKeydown);
+			return () => ksearchEl?.removeEventListener('keydown', handleKeydown);
+		}
 	});
 </script>
 
 <div class="search-container">
 	<input
-		autofocus
 		autocomplete="off"
 		role="combobox"
-		spellCheck="false"
+		spellcheck="false"
 		aria-controls="k-listbox"
 		aria-expanded={showing}
 		type="text"
 		aria-activedescendant={activeDescendantId}
 		name=""
 		id=""
-		bind:value={$ksearch}
-		on:input={search}
+		bind:value={ksearch.value}
+		oninput={search}
 		class="search"
-		placeholder={$placeholder}
+		placeholder={placeholder.value}
 		bind:this={ksearchEl}
 	/>
 </div>

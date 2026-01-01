@@ -1,52 +1,124 @@
 <svelte:head>
 
-<title>Data Structure</title>
+<title>Data Structure - kbar-svelte-mini</title>
 </svelte:head>
 
 # Data Structure
 
-## Overview
+Reference for the action object structure used in kbar-svelte-mini.
 
-This documentation outlines the data structure for creating a dynamic navigation menu or similar interactive components. The structure employs an array of objects, each representing a menu item, to offer flexibility and customization options. Below is an in-depth look at the key properties used in this data structure.
+## Action Object
 
-### 1. id (String)
+Each action in the `actions` array is an object with the following properties. You can import the `KbarAction` type from the package:
 
-- **Description:**
-  - A unique identifier for the menu item.
-- **Usage:**
-  - Used to distinguish and reference each item.
+```typescript
+import type { KbarAction } from 'kbar-svelte-mini';
+```
 
-### 2. title (String)
+## Properties
 
-- **Description:**
-  - The display name or label of the menu item.
-- **Usage:**
-  - Represents the text visible to users.
+### `id` (optional)
 
-### 3. subtitle (String) [Optional]
+A unique identifier for the action.
 
-- **Description:**
-  - Additional information or context for the menu item.
-- **Usage:**
-  - Provides supplementary details about the item, when applicable.
+```typescript
+{ id: 'home', title: 'Home', ... }
+```
 
-### 4. callback (Function)
+**Type:** `string`
 
-- **Description:**
-  - A function executed upon interaction with the menu item.
-- **Usage:**
-  - Defines the action or behavior associated with the menu item.
+**Notes:** While optional, providing an `id` helps with debugging and can be useful for tracking which actions users select.
 
-### 5. parent (String) [Optional]
+### `title` (required)
 
-- **Description:**
-  - Identifies the parent item for nested sub-items.
-- **Usage:**
-  - Organizes items hierarchically, establishing parent-child relationships.
+The main text displayed for the action.
 
-### 6. nested (Array of Objects) [Optional]
+```typescript
+{ title: 'Go to Dashboard', ... }
+```
 
-- **Description:**
-  - Represents an array of sub-items nested under a parent item.
-- **Usage:**
-  - Allows for the creation of dropdowns or multi-level menu structures.
+**Type:** `string`
+
+**Notes:** Keep titles concise and action-oriented. Users scan these quickly when searching.
+
+### `subtitle` (optional)
+
+Secondary text that provides additional context.
+
+```typescript
+{
+  title: 'Settings',
+  subtitle: 'Manage your preferences',
+  ...
+}
+```
+
+**Type:** `string`
+
+**Notes:** Use subtitles to clarify what an action does or provide keyboard shortcuts.
+
+### `callback` (conditional)
+
+A function executed when the action is selected.
+
+```typescript
+{
+  title: 'Print Page',
+  callback: () => window.print()
+}
+```
+
+**Type:** `() => void`
+
+**Notes:** Either `callback` or `nested` should be provided. If neither is present, selecting the action does nothing. If both are present, `nested` takes priority.
+
+### `nested` (optional)
+
+An array of child actions. When selected, these replace the current list.
+
+```typescript
+{
+  title: 'Theme',
+  nested: [
+    { id: 'light', title: 'Light', callback: () => setTheme('light') },
+    { id: 'dark', title: 'Dark', callback: () => setTheme('dark') }
+  ]
+}
+```
+
+**Type:** `KbarAction[]`
+
+**Notes:** Nested menus can go as deep as needed. The palette title updates to show the current parent context.
+
+## Quick Reference Table
+
+| Property   | Type       | Required    | Description           |
+| ---------- | ---------- | ----------- | --------------------- |
+| `id`       | `string`   | No          | Unique identifier     |
+| `title`    | `string`   | **Yes**     | Display text          |
+| `subtitle` | `string`   | No          | Secondary description |
+| `callback` | `function` | Conditional | Action to perform     |
+| `nested`   | `Action[]` | Conditional | Child actions         |
+
+## TypeScript Types
+
+If you're using TypeScript, you can import or define the action type:
+
+```typescript
+type KbarAction = {
+	id?: string;
+	title: string;
+	subtitle?: string;
+	callback?: () => void;
+	nested?: KbarAction[];
+};
+
+// Usage
+const actions: KbarAction[] = [
+	{
+		id: 'home',
+		title: 'Home',
+		callback: () => goto('/')
+	}
+];
+```

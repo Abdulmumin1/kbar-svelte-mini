@@ -5,7 +5,7 @@ import { mdsvex } from 'mdsvex';
 import { codeToHtml } from 'shiki';
 
 const mdsvexConf = {
-	extensions: ['.md', '.svelte'],
+	extensions: ['.md'],
 	highlight: {
 		highlighter: async (code, lang = 'text') => {
 			const html = await codeToHtml(code, {
