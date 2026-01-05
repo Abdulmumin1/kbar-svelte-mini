@@ -1,6 +1,9 @@
 {
 	"name": "kbar-svelte-mini",
 	"version": "0.1.2",
+	"repository": {
+		"url": "https://github.com/Abdulmumin1/kbar-svelte-mini"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
