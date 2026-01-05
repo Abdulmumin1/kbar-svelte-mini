@@ -48,7 +48,7 @@ let actions = [
 // ... add more actions as needed
 ];
 
-// Include the KDialog component with defined actions
+// Include the KDialog component with defined actions!
 
 <KDialog {actions} />
 ```
